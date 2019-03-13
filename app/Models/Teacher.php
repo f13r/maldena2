@@ -13,7 +13,7 @@ class Teacher extends Model
      * @var array
      */
     protected $fillable = [
-        'user', 'name', 'email', 'facebook', 'photo', 'age', 'sex',  'experience', 'description'
+        'user_id', 'name', 'email', 'facebook', 'photo', 'age', 'sex',  'experience', 'description'
     ];
 
     /**

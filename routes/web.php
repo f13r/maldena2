@@ -16,14 +16,16 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group([], function () use ($router) {
+$router->get('/callback', 'SocialAuthFacebookController@callback');
+$router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/login', 'SocialAuthFacebookController@redirect');
-    $router->get('/callback', 'SocialAuthFacebookController@callback');
 });
 
-$router->group(['middleware' => ['jwt']], function () use ($router) {
+
+$router->group(['middleware' => ['jwt'], 'prefix' => 'api'], function () use ($router) {
     $router->get('teachers',  ['uses' => 'TeachersController@showAllTeachers']);
-    $router->get('teachers/{id}', ['uses' => 'TeachersController@showOneTeachers']);
+    $router->get('teacher/{id}', ['uses' => 'TeachersController@showOneTeacher']);
+    $router->get('teacher', ['uses' => 'TeachersController@showMyTeacher']);
     $router->post('teachers', ['uses' => 'TeachersController@create']);
     $router->delete('teachers/{id}', ['uses' => 'TeachersController@delete']);
     $router->put('teachers/{id}', ['uses' => 'TeachersController@update']);

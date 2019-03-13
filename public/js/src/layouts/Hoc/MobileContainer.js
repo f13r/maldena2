@@ -2,14 +2,17 @@ import React, { Component } from 'react'
 import {
 	Menu,
 	Responsive,
-	Sidebar
+	Sidebar,
+	Image,
+	Icon
 } from 'semantic-ui-react';
 
-import MobileMenu from '../../partials/MobileMenu';
+import { withRouter } from 'react-router-dom'
 
+import logo from '../../img/logo.png';
 import '../header.css';
 
-export default class MobileContainer extends Component {
+class MobileContainer extends Component {
 
 	state = {};
 
@@ -41,7 +44,17 @@ export default class MobileContainer extends Component {
 				</Sidebar>
 
 				<Sidebar.Pusher dimmed={sidebarOpened}>
-					<MobileMenu handleToggle={this.handleToggle}/>
+					<Menu
+						inverted
+						borderless
+					>
+						<Menu.Item as='a'>
+							<Image size='small' src={logo}/>
+						</Menu.Item>
+						<Menu.Item position='right' onClick={this.handleToggle}>
+							<Icon name='sidebar' />
+						</Menu.Item>
+					</Menu>
 					{children}
 				</Sidebar.Pusher>
 			</Responsive>
@@ -49,3 +62,4 @@ export default class MobileContainer extends Component {
 	}
 }
 
+export default withRouter(MobileContainer);

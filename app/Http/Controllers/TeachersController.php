@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
-use App\User;
+use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,13 +12,18 @@ class TeachersController extends Controller
 
     public function showAllTeachers()
     {
-        $user = Auth::user();
-        return response()->json(Auth::user()->teacher);
+        return response()->json(Teacher::all());
     }
 
-    public function showOneTeachers($id)
+    public function showOneTeacher($id)
     {
         return response()->json(Teacher::find($id));
+    }
+
+    public function showMyTeacher()
+    {
+        $user = Auth::user();
+        return response()->json(Teacher::where('user_id', '=', $user->id)->first());
     }
 
     public function create(Request $request)

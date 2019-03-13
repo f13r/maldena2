@@ -15,6 +15,15 @@ class UpdateTeacherTable extends Migration
     {
         Schema::table('teachers', function (Blueprint $table) {
             $table->integer('user_id');
+            /**
+             * 	'name': '',
+            'lastName': '',
+            'gender': '',
+            'experience': '',
+            'price': '',
+            'lessonDuration': '',
+            'description': '',
+             */
         });
     }
 
