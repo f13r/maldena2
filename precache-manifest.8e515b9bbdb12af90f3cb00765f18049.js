@@ -1,23 +1,23 @@
 self.__precacheManifest = [
   {
-    "revision": "5a26104b0de3dbed788d",
+    "revision": "ba58556432e36eb36195",
     "url": "/maldena2.0/static/css/main.f9b0ab10.chunk.css"
   },
   {
-    "revision": "5a26104b0de3dbed788d",
-    "url": "/maldena2.0/static/js/main.5a26104b.chunk.js"
+    "revision": "ba58556432e36eb36195",
+    "url": "/maldena2.0/static/js/main.ba585564.chunk.js"
   },
   {
     "revision": "0e59911ee0553adfb4fd",
     "url": "/maldena2.0/static/js/runtime~main.0e59911e.js"
   },
   {
-    "revision": "ca917eb7bc76e620eb97",
+    "revision": "83432872df4571966137",
     "url": "/maldena2.0/static/css/2.a1657fd8.chunk.css"
   },
   {
-    "revision": "ca917eb7bc76e620eb97",
-    "url": "/maldena2.0/static/js/2.ca917eb7.chunk.js"
+    "revision": "83432872df4571966137",
+    "url": "/maldena2.0/static/js/2.83432872.chunk.js"
   },
   {
     "revision": "b51a02edf73eeddd93634cd966d8a555",
@@ -60,20 +60,20 @@ self.__precacheManifest = [
     "url": "/maldena2.0/static/media/brand-icons.a046592b.woff"
   },
   {
-    "revision": "13db00b7a34fee4d819ab7f9838cc428",
-    "url": "/maldena2.0/static/media/brand-icons.13db00b7.eot"
+    "revision": "8e3c7f5520f5ae906c6cf6d7f3ddcd19",
+    "url": "/maldena2.0/static/media/icons.8e3c7f55.eot"
   },
   {
     "revision": "b87b9ba532ace76ae9f6edfe9f72ded2",
     "url": "/maldena2.0/static/media/icons.b87b9ba5.ttf"
   },
   {
-    "revision": "c5ebe0b32dc1b5cc449a76c4204d13bb",
-    "url": "/maldena2.0/static/media/brand-icons.c5ebe0b3.ttf"
+    "revision": "13db00b7a34fee4d819ab7f9838cc428",
+    "url": "/maldena2.0/static/media/brand-icons.13db00b7.eot"
   },
   {
-    "revision": "8e3c7f5520f5ae906c6cf6d7f3ddcd19",
-    "url": "/maldena2.0/static/media/icons.8e3c7f55.eot"
+    "revision": "c5ebe0b32dc1b5cc449a76c4204d13bb",
+    "url": "/maldena2.0/static/media/brand-icons.c5ebe0b3.ttf"
   },
   {
     "revision": "82f60bd0b94a1ed68b1e6e309ce2e8c3",
@@ -88,7 +88,7 @@ self.__precacheManifest = [
     "url": "/maldena2.0/static/media/brand-icons.a1a749e8.svg"
   },
   {
-    "revision": "a4eb6948c2974a4c89cc93d8476ac19c",
+    "revision": "95026b0d965136c2d0018e2510f7973c",
     "url": "/maldena2.0/index.html"
   }
 ];
