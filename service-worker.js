@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/maldena2.0/precache-manifest.24b7ecd950435966d5d44181d36d7b29.js"
+  "/maldena2.0/precache-manifest.1b06a9e264686ae5e597122a0cdcca20.js"
 );
 
 workbox.clientsClaim();
