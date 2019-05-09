@@ -39,14 +39,14 @@ class SocialAuthFacebookController extends Controller
             ]
         );
 
-        Teacher::firstOrCreate(
+        Teacher::updateOrCreate(
             [
                 'user_id' => $user->id
             ],
             [
                 'name' => $facebookUser->getName(),
                 'email' => $facebookUser->getEmail(),
-                'photo' => $facebookUser->getAvatar()
+                'photo' => str_replace('normal', 'large', $facebookUser->getAvatar())
             ]
         );
 

@@ -7,6 +7,15 @@ import Teacher from "./components/Teacher";
 import GetToken from "./components/GetToken";
 import Logout from "./components/logout";
 
+import axios from 'axios';
+import token from './helpers/token';
+
+axios.defaults.headers.common = {
+    'Authorization': 'Bearer ' + token.get(),
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+};
+
 class App extends Component {
 
 	  render() {

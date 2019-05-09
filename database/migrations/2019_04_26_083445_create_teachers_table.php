@@ -15,16 +15,23 @@ class CreateTeachersTable extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user');
-            $table->string('name');
-            $table->string('email');
-            $table->string('facebook');
+            $table->integer('user_id')->unsigned();
             $table->string('photo');
-            $table->string('age');
-            $table->string('sex');
-            $table->string('experience');
-            $table->string('description');
+            $table->string('name');
+            $table->string('phone');
+            $table->string('email');
+            $table->smallInteger('experience');
+            $table->text('education');
+            $table->smallInteger('lessonDuration');
+            $table->string('lessonPrice');
+            $table->text('venue')->nullable();
+            $table->text('home')->nullable();
+            $table->smallInteger('skype')->nullable();
+            $table->integer('teachingLevels');
+            $table->text('description');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -26,7 +26,7 @@ $router->group(['middleware' => ['jwt'], 'prefix' => 'api'], function () use ($r
     $router->get('teachers',  ['uses' => 'TeachersController@showAllTeachers']);
     $router->get('teacher/{id}', ['uses' => 'TeachersController@showOneTeacher']);
     $router->get('teacher', ['uses' => 'TeachersController@showMyTeacher']);
-    $router->post('teachers', ['uses' => 'TeachersController@create']);
+    $router->post('teacher', ['uses' => 'TeachersController@update']);
     $router->delete('teachers/{id}', ['uses' => 'TeachersController@delete']);
     $router->put('teachers/{id}', ['uses' => 'TeachersController@update']);
 });

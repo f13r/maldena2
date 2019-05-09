@@ -33,12 +33,14 @@ class TeachersController extends Controller
         return response()->json($author, 201);
     }
 
-    public function update($id, Request $request)
+    public function update(Request $request)
     {
-        $author = Teacher::findOrFail($id);
-        $author->update($request->all());
+        $id = $request->get('id');
 
-        return response()->json($author, 200);
+        $theacher = Teacher::findOrFail($id);
+        $theacher->update($request->all());
+
+        return response()->json($theacher, 200);
     }
 
     public function delete($id)

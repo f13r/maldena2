@@ -8,12 +8,12 @@ import {
 
 import ResponsiveContainer from './Hoc/ResponsiveContainer';
 
-const Layout = (props) => {
+const Layout = ({ children }) => {
 
 	return (
-		<ResponsiveContainer {...props}>
+		<ResponsiveContainer>
 			<Container text style={{margin: '3em 0 3em 0'}}>
-				{props.children}
+				{ children }
 			</Container>
 			<Segment inverted vertical style={{padding: '3em'}}>
 				<Container textAlign='center'>

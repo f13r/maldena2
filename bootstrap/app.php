@@ -64,7 +64,7 @@ $app->singleton(
 // ]);
 
  $app->routeMiddleware([
-     'jwt' => \Tymon\JWTAuth\Http\Middleware\AuthenticateAndRenew::class,
+     'jwt' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
 //     'auth' => App\Http\Middleware\Authenticate::class
  ]);
 
