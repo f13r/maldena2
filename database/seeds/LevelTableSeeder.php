@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-class TeachingLevelTableSeeder extends Seeder
+
+class LevelTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +13,7 @@ class TeachingLevelTableSeeder extends Seeder
      */
     public function run()
     {
+
         $values = [
             'Младшие классы 1-4',
             '5 - 6 классы',
@@ -29,7 +32,7 @@ class TeachingLevelTableSeeder extends Seeder
         ];
 
         foreach ($values as $value) {
-            DB::table('teaching_levels')->insert(
+            DB::table('levels')->insert(
                 [
                     'value' => $value
                 ]

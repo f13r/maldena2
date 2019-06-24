@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
-use http\Client\Curl\User;
+use App\Models\TeacherLevel;
+use App\Services\TeacherService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,10 +21,14 @@ class TeachersController extends Controller
         return response()->json(Teacher::find($id));
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function showMyTeacher()
     {
         $user = Auth::user();
-        return response()->json(Teacher::where('user_id', '=', $user->id)->first());
+        $teacher = Teacher::where('user_id', '=', $user->id)->first();
+        return response()->json($teacher);
     }
 
     public function create(Request $request)
@@ -33,14 +38,10 @@ class TeachersController extends Controller
         return response()->json($author, 201);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, TeacherService $teacherService)
     {
-        $id = $request->get('id');
-
-        $theacher = Teacher::findOrFail($id);
-        $theacher->update($request->all());
-
-        return response()->json($theacher, 200);
+        $teacher = $teacherService->saveTeacher($request->all());
+        return response()->json($teacher, 200);
     }
 
     public function delete($id)

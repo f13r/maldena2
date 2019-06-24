@@ -13,13 +13,13 @@ class CreateTeacherLevelTable extends Migration
      */
     public function up()
     {
-        Schema::create('teacher_levels', function (Blueprint $table) {
+        Schema::create('level_teacher', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('teacher_id')->unsigned();
-            $table->integer('teaching_level_id')->unsigned();
+            $table->integer('level_id')->unsigned();
 
-            $table->foreign('teaching_level_id')->references('id')->on('teaching_levels');
             $table->foreign('teacher_id')->references('id')->on('teachers');
+            $table->foreign('level_id')->references('id')->on('levels');
         });
     }
 
@@ -30,6 +30,6 @@ class CreateTeacherLevelTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('teacher_levels');
+        Schema::dropIfExists('level_teacher');
     }
 }

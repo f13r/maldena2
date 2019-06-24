@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 
 use Faker\Factory as Faker;
 
-class TeacherLevelTableSeeder extends Seeder
+class LevelTeacherTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,9 +16,9 @@ class TeacherLevelTableSeeder extends Seeder
     {
         $faker = Faker::create('uk_UA');
         for ($i = 0; $i <= 20; $i++) {
-            DB::table('teacher_levels')->insert([
+            DB::table('level_teacher')->insert([
                 'teacher_id'     => $faker->numberBetween(1, 20),
-                'teaching_level_id'     => $faker->numberBetween(1, 14),
+                'level_id'     => $faker->numberBetween(1, 14),
             ]);
         }
     }

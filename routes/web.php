@@ -29,4 +29,6 @@ $router->group(['middleware' => ['jwt'], 'prefix' => 'api'], function () use ($r
     $router->post('teacher', ['uses' => 'TeachersController@update']);
     $router->delete('teachers/{id}', ['uses' => 'TeachersController@delete']);
     $router->put('teachers/{id}', ['uses' => 'TeachersController@update']);
+
+    $router->get('options',  ['uses' => 'OptionsController@get']);
 });

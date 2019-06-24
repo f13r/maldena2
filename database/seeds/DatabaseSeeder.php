@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call('TeachersTableSeeder');
         $this->call('LessonDurationTableSeeder');
         $this->call('TeacherExperienceTableSeeder');
-        $this->call('TeachingLevelTableSeeder');
-        $this->call('TeacherLevelTableSeeder');
+        $this->call('LevelTableSeeder');
+        $this->call('LevelTeacherTableSeeder');
     }
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 import Token from "../helpers/token";
 
 const Logout = (props) => {
