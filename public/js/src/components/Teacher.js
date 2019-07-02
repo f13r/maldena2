@@ -11,7 +11,8 @@ const Teacher = () => {
 		{
 			!Token.get() ? (
 				<div>
-					<Header as = 'h1'> Login with Facebook and join Maldena English Society </Header>
+					<Header as = 'h2'> Login with Facebook and join Maldena English Society </Header>
+                    <br/>
 					<a href='//localhost:8000/api/login'>
 						<Button size='huge' fluid color='facebook'>
 							<Icon name='facebook' /> Facebook
@@ -19,7 +20,8 @@ const Teacher = () => {
 					</a>
 				</div>) : (
 				<div>
-					<Header as = 'h1'> Fill the form and start to be a part of Maldena English Society</Header>
+					<Header as = 'h2'>Заполни форму чтобы cтать частью Maldena English Society </Header>
+                    <br/>
 					<TeacherForm/>
 				</div>)
 		}

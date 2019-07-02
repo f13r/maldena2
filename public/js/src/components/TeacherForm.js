@@ -1,12 +1,25 @@
-import React, { Component } from "react";
-import { Form, Image, Grid, Icon, Divider, Loader } from "semantic-ui-react";
+import React, {Component} from "react";
+import {Form, Image, Grid, Icon, Divider, Loader, Message} from "semantic-ui-react";
 import MaskedInput from "react-text-mask";
 import axios from 'axios';
 
 class TeacherForm extends Component {
 
-	state = {
-	    teacher: {
+    defaultValidation = {
+        errorName: false,
+        errorPhone: false,
+        errorEmail: false,
+        errorEducation: false,
+        errorLessonPrice: false,
+        errorVenue: false,
+        errorHome: false,
+        errorSkype: false,
+        errorDescription: false,
+        errorForm: false
+    };
+
+    state = {
+        teacher: {
             name: '',
             email: '',
             experience: '',
@@ -20,24 +33,37 @@ class TeacherForm extends Component {
             showHome: '',
             home: '',
             phone: '',
+            showSkype: '',
             skype: ''
         },
         loaded: false,
         options: {
-            teacherExperiences:  [
-                { key: '1', text: 'less than 1 year', value: '1' },
-                { key: '2', text: 'from 1 to 5 years', value: '2' },
-                { key: '3', text: 'from 5 to 10 years', value: '3' },
-                { key: '4', text: 'more than 10 years', value: '4' }
+            teacherExperiences: [
+                {key: '1', text: 'less than 1 year', value: '1'},
+                {key: '2', text: 'from 1 to 5 years', value: '2'},
+                {key: '3', text: 'from 5 to 10 years', value: '3'},
+                {key: '4', text: 'more than 10 years', value: '4'}
             ],
             lessonDurations: [
-                { key: '1', text: '30 min', value: '1' },
-                { key: '2', text: '45 min', value: '2' },
-                { key: '3', text: '1 hour', value: '3' },
-                { key: '4', text: '1 and half hours', value: '4' }
+                {key: '1', text: '30 min', value: '1'},
+                {key: '2', text: '45 min', value: '2'},
+                {key: '3', text: '1 hour', value: '3'},
+                {key: '4', text: '1 and half hours', value: '4'}
             ]
+        },
+        validationResult: {
+            errorName: false,
+            errorPhone: false,
+            errorEmail: false,
+            errorEducation: false,
+            errorLessonPrice: false,
+            errorVenue: false,
+            errorHome: false,
+            errorSkype: false,
+            errorDescription: false,
+            errorForm: false
         }
-	};
+    };
 
     prepareTeacherDataForView(teacher) {
         teacher['showVenue'] = teacher.venue !== null && teacher.venue !== '';
@@ -48,13 +74,13 @@ class TeacherForm extends Component {
     };
 
 
-	componentDidMount() {
-	    const teacherPromise = axios.get('/api/teacher').then(
-	        res => {
+    componentDidMount() {
+        const teacherPromise = axios.get('/api/teacher').then(
+            res => {
 
-	            const teacher = this.prepareTeacherDataForView(res.data);
+                const teacher = this.prepareTeacherDataForView(res.data);
 
-	            console.log(teacher, 'teacher');
+                console.log(teacher, 'teacher');
 
                 this.setState({
                     ...this.state,
@@ -80,64 +106,137 @@ class TeacherForm extends Component {
         );
 
         Promise.all([teacherPromise, optionsPromise]).then(() => {
-           this.setState({
-              ...this.state,
-              loaded: true
-           });
+            this.setState({
+                ...this.state,
+                loaded: true
+            });
         });
-	}
+    }
 
 
-	adjustToSelect = options => {
-       return options.map(option => {
-            return   {
-               key: option.id,
-               text: option.value,
-               value : option.id
-           }
-       });
+    adjustToSelect = options => {
+        return options.map(option => {
+            return {
+                key: option.id,
+                text: option.value,
+                value: option.id
+            }
+        });
     };
 
-	handleSubmit = () => {
-	    const teacher = {...this.state.teacher};
-	    teacher.venue = teacher.showVenue ? teacher.venue : '';
-        teacher.home = teacher.showHome ? teacher.home : '';
-        teacher.skype = teacher.showSkype ? teacher.skype : '';
+    formIsValid = () => {
 
-	    axios.post('api/teacher', teacher);
-	};
+        const {
+            name, email, education, description,
+            venue, home, showVenue, showHome,
+            showSkype, lessonPrice, phone, skype
+        } = this.state.teacher;
 
-	handlePhoneChange = evt => {
+        let validationResult = {};
 
-	    const phoneWithMask = evt.target. value;
-        const phone = phoneWithMask.replace(/\D/g,'');
+        if (name === '') {
+            validationResult['errorName'] = true;
+        }
 
-        this.setState( {
+        if (email === '') {
+            validationResult['errorEmail'] = true;
+        }
+
+        if (education === '') {
+            validationResult['errorEducation'] = true;
+        }
+
+        if (description === '') {
+            validationResult['errorDescription'] = true;
+        }
+
+        if (showVenue === true && venue === '') {
+            validationResult['errorVenue'] = true;
+        }
+
+        if (showHome === true && home === '') {
+            validationResult['errorHome'] = true;
+        }
+
+        if (showSkype === true && skype === '') {
+            validationResult['errorSkype'] = true;
+        }
+
+        if (lessonPrice === '' || Number.isInteger(lessonPrice)) {
+            validationResult['errorLessonPrice'] = true;
+        }
+
+        if (phone === '') {
+            validationResult['errorPhone'] = true;
+        }
+
+        if (Object.keys(validationResult).length !== 0) {
+
+            this.setState({
+                validationResult: {
+                    ...this.state.validationResult,
+                    ...validationResult
+                }
+            });
+
+            return false;
+        }
+
+        return true;
+    };
+
+    handleSubmit = () => {
+        if (this.formIsValid()) {
+
+            const teacher = {...this.state.teacher};
+
+            teacher.venue = teacher.showVenue ? teacher.venue : '';
+            teacher.home = teacher.showHome ? teacher.home : '';
+            teacher.skype = teacher.showSkype ? teacher.skype : '';
+
+            axios.post('api/teacher', teacher);
+        }
+
+    };
+
+    resetValidation = () => {
+        this.setState({
+            validationResult: {
+                ...this.defaultValidation
+            }
+        });
+    };
+
+    handlePhoneChange = evt => {
+        const phoneWithMask = evt.target.value;
+        const phone = phoneWithMask.replace(/\D/g, '');
+
+        this.setState({
             ...this.state,
             teacher: {
                 ...this.state.teacher,
                 phone
             }
-        });
+        }, this.resetValidation);
     };
 
-	handleChange = (e, { name, value }) => {
-	    console.log(name, value);
-	    this.setState( {
-           ...this.state,
-           teacher: {
-               ...this.state.teacher,
-               [name]: value
-           }
-        });
-	};
+    handleChange = (e, {name, value}) => {
 
-	handleLevelsCheckBoxChange = (e, { name, value, checked }) => {
+        this.setState({
+            ...this.state,
+            teacher: {
+                ...this.state.teacher,
+                [name]: value
+            }
+        }, this.resetValidation);
+    };
 
-	    let checkBoxOptions = this.state.teacher[name];
+    handleLevelsCheckBoxChange = (e, {name, value, checked}) => {
 
-	    if (checked) {
-	        checkBoxOptions.push(value);
+        let checkBoxOptions = this.state.teacher[name];
+
+        if (checked) {
+            checkBoxOptions.push(value);
         } else {
             checkBoxOptions = checkBoxOptions.filter(item => item !== value);
         }
@@ -148,43 +247,61 @@ class TeacherForm extends Component {
                     ...this.state.teacher,
                     [name]: checkBoxOptions
                 }
-            }
+            },
+            this.resetValidation
         );
     };
 
-	handleDisable = field => () => {
+    handleDisable = field => () => {
+
         this.setState({
                 ...this.state,
                 teacher: {
                     ...this.state.teacher,
                     [field]: !this.state.teacher[field]
                 }
-            }
-	    );
+            },
+            this.resetValidation
+        );
     };
 
-	getLevels = () => {
-        const { levels } = this.state.options;
-        const { levels: teacherLevels = [] } = this.state.teacher;
+    getLevels = () => {
+        const {levels} = this.state.options;
+        const {levels: teacherLevels = []} = this.state.teacher;
 
-	    return  levels.map(level => {
-	           let checked = teacherLevels.includes(level.value);
-               return <Form.Checkbox name='levels' checked={checked} key={level.key} value={level.value} label={level.text}
-                               onChange={this.handleLevelsCheckBoxChange}/>
+        return levels.map(level => {
+                let checked = teacherLevels.includes(level.value);
+                return <Form.Checkbox name='levels' checked={checked} key={level.key} value={level.value} label={level.text}
+                                      onChange={this.handleLevelsCheckBoxChange}/>
             }
         );
     };
 
 
-	render() {
+    render() {
         if (this.state.loaded) {
 
-            const { photo, name, email, education, description, experience,
-                venue, home, lessonPrice, phone, lessonDuration, showHome, showVenue, skype, showSkype } = this.state.teacher;
-            const { options } = this.state;
+            const {
+                photo, name, email, education, description, experience,
+                venue, home, lessonPrice, phone, lessonDuration, showHome, showVenue, skype, showSkype
+            } = this.state.teacher;
+            const {options} = this.state;
+
+            const {
+                errorName,
+                errorPhone,
+                errorEmail,
+                errorEducation,
+                errorLessonPrice,
+                errorVenue,
+                errorHome,
+                errorSkype,
+                errorDescription,
+                errorForm
+            } = this.state.validationResult;
 
             return (
-                <Form onSubmit={this.handleSubmit}>
+                <Form onSubmit={this.handleSubmit} error={errorForm}>
                     <Grid container doubling stackable>
                         <Grid.Row>
                             <Grid.Column width={5}>
@@ -195,18 +312,20 @@ class TeacherForm extends Component {
                                     <Form.Input fluid
                                                 iconPosition='left'
                                                 name='name'
+                                                error={errorName}
                                                 value={name}
-                                                label='Full name'
-                                                placeholder='Your full name'
+                                                label='Имя'
+                                                placeholder='Имя и Фамилия'
                                                 onChange={this.handleChange}>
-                                        <Icon name='user' />
-                                        <input />
+                                        <Icon name='user'/>
+                                        <input/>
                                     </Form.Input>
                                     <Form.Input
                                         fluid
                                         name='phone'
+                                        error={errorPhone}
                                         iconPosition='left'
-                                        label='Phone'
+                                        label='Телефон'
                                         children={
                                             <React.Fragment>
                                                 <MaskedInput
@@ -225,35 +344,44 @@ class TeacherForm extends Component {
                                     <Form.Input
                                         fluid
                                         value={email}
+                                        error={errorEmail}
                                         iconPosition='left'
                                         type='email'
                                         label='E-mail'
                                         name='email'
-                                        placeholder='Your contact E-mail'
+                                        placeholder='E-mail'
                                         onChange={this.handleChange}>
-                                        <Icon name='at' />
-                                        <input />
+                                        <Icon name='at'/>
+                                        <input/>
                                     </Form.Input>
-                                    <Form.Select fluid  label='Experience' value={experience} name='experience' options={options.teacherExperiences} placeholder={options.teacherExperiences[0].text} onChange={this.handleChange}/><br/>
+                                    <Form.Select
+                                        fluid
+                                        label='Опыт работы'
+                                        value={experience}
+                                        name='experience'
+                                        options={options.teacherExperiences}
+                                        placeholder={options.teacherExperiences[0].text}
+                                        onChange={this.handleChange}/>
                                 </Form.Group>
                                 <Form.Group widths='equal'>
                                     <Form.TextArea
-                                        label='Education'
+                                        label='Образование'
                                         value={education}
+                                        error={errorEducation}
                                         name='education'
-                                        placeholder='Tell us where did you study...'
+                                        placeholder='Расскажите о своем образовании'
                                         onChange={this.handleChange}
                                     >
                                     </Form.TextArea>
                                 </Form.Group>
                             </Grid.Column>
                         </Grid.Row>
-                        <Divider horizontal>Lessons description</Divider>
+                        <Divider horizontal>Об уроках</Divider>
                         <Grid.Row>
                             <Grid.Column width={8}>
                                 <Form.Select
                                     fluid
-                                    label='Lesson duration'
+                                    label='Длина урока'
                                     value={lessonDuration}
                                     name='lessonDuration'
                                     options={options.lessonDurations}
@@ -264,55 +392,70 @@ class TeacherForm extends Component {
                             <Grid.Column width={8}>
                                 <Form.Input
                                     fluid
-                                    label='Price, UAH'
+                                    label='Цена, грн'
                                     iconPosition='left'
                                     value={lessonPrice}
+                                    error={errorLessonPrice}
                                     name='lessonPrice'
-                                    placeholder='Price per lesson...'
+                                    placeholder='Цена одного урока'
                                     onChange={this.handleChange}>
-                                    <Icon name='money' />
-                                    <input />
+                                    <Icon name='money'/>
+                                    <input/>
                                 </Form.Input>
-
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column>
-                                <Form.Checkbox label='I can go to student home' defaultChecked={showVenue} name='showVenue' onClick={this.handleDisable('showVenue')} />
-                                <Form.TextArea label='Venue away' value={venue || ''}  disabled={!showVenue}  name='venue' placeholder='What district do you prefer to teach away' onChange={this.handleChange}/>
-                                <Form.Checkbox label='I can teach at my home' defaultChecked={showHome} name='showHome' onClick={this.handleDisable('showHome')}/>
-                                <Form.TextArea label='Home' value={home || ''} disabled={!showHome} name='home' placeholder="Put your home address if it's possible " onChange={this.handleChange}/>
-                                <Form.Checkbox label='I can teach through skype' name='skype' defaultChecked={showSkype}  onClick={this.handleDisable('showSkype')}/>
+                                <Form.Checkbox
+                                    label='Я могу проводить уроки у студента дома'
+                                    defaultChecked={showVenue}
+                                    name='showVenue'
+                                    onClick={this.handleDisable('showVenue')}
+                                />
+                                <Form.TextArea label='Районы' error={errorVenue} value={venue || ''}
+                                               disabled={!showVenue} name='venue'
+                                               placeholder='Районы города где вы можете проводить уроки'
+                                               onChange={this.handleChange}/>
+                                <Form.Checkbox label='Я могу проводить уроки у себя дома' defaultChecked={showHome} name='showHome'
+                                               onClick={this.handleDisable('showHome')}/>
+                                <Form.TextArea label='Домашний адрес' error={errorHome} value={home || ''} disabled={!showHome}
+                                               name='home' placeholder="Район, где находится ваш дом"
+                                               onChange={this.handleChange}/>
+                                <Form.Checkbox label='Я могу проводить уроки по Skype' name='skype' defaultChecked={showSkype}
+                                               onClick={this.handleDisable('showSkype')}/>
                                 <Form.Input
                                     fluid
                                     disabled={!showSkype}
                                     value={skype || ''}
+                                    error={errorSkype}
                                     iconPosition='left'
                                     type='skype'
                                     label='Skype'
                                     name='skype'
                                     placeholder='Skype адрес'
                                     onChange={this.handleChange}>
-                                    <Icon name='skype' />
-                                    <input />
+                                    <Icon name='skype'/>
+                                    <input/>
                                 </Form.Input>
                             </Grid.Column>
                         </Grid.Row>
-                        <Divider horizontal>Teaching levels</Divider>
+                        <Divider horizontal>Уровни преподования</Divider>
                         <Grid.Row>
                             <Grid.Column>
-                                { this.getLevels() }
+                                {this.getLevels()}
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column>
-                                <Form.TextArea label='About' value={description} name='description' placeholder='Tell us more about you...' onChange={this.handleChange}/>
+                                <Form.TextArea error={errorDescription} label='О себе' value={description}
+                                               name='description' placeholder='Напишите о себе, чтобы заинтерисовать возможных студентов'
+                                               onChange={this.handleChange}/>
                             </Grid.Column>
                         </Grid.Row>
 
                         <Grid.Row>
                             <Grid.Column>
-                                <Form.Button>Submit</Form.Button>
+                                <Form.Button>Добавить</Form.Button>
                             </Grid.Column>
                         </Grid.Row>
 
@@ -320,9 +463,9 @@ class TeacherForm extends Component {
                 </Form>
             );
         } else {
-            return <Loader />;
+            return <Loader/>;
         }
-	}
+    }
 }
 
 export default TeacherForm;
