@@ -1,5 +1,9 @@
 <?php
 
+
+use App\Services\ViewServices\DefaultTeacherViewService;
+use App\Services\ViewServices\Interfaces\TeacherViewInterface;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 try {
@@ -100,6 +104,8 @@ config(['services' => [
 ]]);
 $app->alias('cache', 'Illuminate\Cache\CacheManager');
 $app->alias('auth', 'Illuminate\Auth\AuthManager');
+
+$app->bind(TeacherViewInterface::class, DefaultTeacherViewService::class);
 
 /*
 |--------------------------------------------------------------------------

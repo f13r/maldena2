@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
-use App\Models\TeacherLevel;
+use App\Services\ViewServices\Interfaces\TeacherViewInterface;
 use App\Services\TeacherService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\Auth;
 class TeachersController extends Controller
 {
 
-    public function showAllTeachers()
+    public function showAllTeachers(TeacherViewInterface $view, TeacherService $teacherService)
     {
-        return response()->json(Teacher::all());
+        $teachers = $view->adjustForView(Teacher::all(), $teacherService->getTeachersOptions());
+        return response()->json($teachers);
     }
 
     public function showOneTeacher($id)
@@ -24,10 +25,12 @@ class TeachersController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showMyTeacher()
+    public function showMyTeacher(TeacherViewInterface $view)
     {
+
         $user = Auth::user();
         $teacher = Teacher::where('user_id', '=', $user->id)->first();
+
         return response()->json($teacher);
     }
 

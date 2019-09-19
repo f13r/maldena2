@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class Teacher extends Model
 {
@@ -14,7 +15,7 @@ class Teacher extends Model
      */
     protected $fillable = [
         'user_id', 'name', 'email', 'facebook', 'photo', 'lessonDuration', 'phone', 'venue', 'home',
-        'age', 'sex',  'experience', 'description', 'lessonPrice', 'education', 'skype'
+        'age', 'sex',  'experience', 'description', 'lessonPrice', 'education', 'skype', 'created_at'
     ];
 
     /**

@@ -32,6 +32,11 @@ class DesktopContainer extends Component {
 			'/teacher', true, true
 		);
 
+        const teachersActive = !!matchPath(
+            this.props.location.pathname,
+            '/teachers', true, true
+        );
+
 		return (
 			<Responsive minWidth={Responsive.onlyTablet.minWidth}>
 				<Visibility
@@ -53,8 +58,11 @@ class DesktopContainer extends Component {
 								<Link to='/'>Home</Link>
 							</Menu.Item>
 							<Menu.Item active={teacherActive}>
-								<Link to='/teacher'>Teachers</Link>
+								<Link to='/teacher'>Добавить учителя</Link>
 							</Menu.Item>
+                            <Menu.Item active={teachersActive}>
+                                <Link to='/teachers'>Учителя</Link>
+                            </Menu.Item>
 							<Menu.Item position='right'>
 								<Link to='/logout'>Logout</Link>
 							</Menu.Item>

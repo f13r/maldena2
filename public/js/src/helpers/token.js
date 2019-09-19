@@ -3,17 +3,21 @@ const tokenName = 'jwt-token';
 
 const Token =  {
 
-	get: () => {
-		return localStorage.getItem(tokenName);
+	get: function() {
+        return localStorage.getItem(tokenName) || this.fetchToken();
 	},
 
-	set: jwtToken => {
+	set: function(jwtToken) {
 		return localStorage.setItem(tokenName, jwtToken);
 	},
 
-	remove: () => {
+	remove: function() {
 		return localStorage.removeItem(tokenName);
-	}
+	},
+
+    fetchToken: function() {
+        return new URL(window.location.href).searchParams.get(tokenName);
+    }
 
 };
 

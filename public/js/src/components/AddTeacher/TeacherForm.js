@@ -1,6 +1,8 @@
-import React, {Component} from "react";
-import {Form, Image, Grid, Icon, Divider, Loader, Message} from "semantic-ui-react";
+import React, { Component } from "react";
+import { Form, Image, Grid, Icon, Divider, Loader } from "semantic-ui-react";
+import { withRouter } from 'react-router-dom'
 import MaskedInput from "react-text-mask";
+import Token from "../../helpers/token";
 import axios from 'axios';
 
 class TeacherForm extends Component {
@@ -65,52 +67,53 @@ class TeacherForm extends Component {
         }
     };
 
-    prepareTeacherDataForView(teacher) {
+    prepareTeacherDataForView(teacher, options) {
         teacher['showVenue'] = teacher.venue !== null && teacher.venue !== '';
         teacher['showHome'] = teacher.home !== null && teacher.home !== '';
         teacher['showSkype'] = teacher.skype !== null && teacher.skype !== '';
+        teacher['viewLevels'] = this.getViewLevels(teacher, options.levels);
 
         return teacher;
     };
 
+    getViewLevels(teacher, optionsLevels) {
+        console.log(teacher, optionsLevels, 'hoo');
+
+        return optionsLevels.map(level => {
+            if (teacher.levels.includes(level.id)) {
+                return level.value;
+            }
+        }).filter(Boolean);
+    }
+
 
     componentDidMount() {
-        const teacherPromise = axios.get('/api/teacher').then(
-            res => {
+        const teacherPromise = axios.get('/api/teacher');
+        const optionsPromise = axios.get('/api/options');
 
-                const teacher = this.prepareTeacherDataForView(res.data);
+        Promise.all([teacherPromise, optionsPromise]).then((res) => {
 
-                console.log(teacher, 'teacher');
+            let options = [];
+            const optionNames = Object.keys(res[1].data);
 
-                this.setState({
-                    ...this.state,
-                    teacher
-                });
-            }
-        );
-        const optionsPromise = axios.get('/api/options').then(
-            res => {
+            optionNames.forEach(optionName => {
+                options[optionName] = this.adjustToSelect(res[1].data[optionName]);
+            });
 
-                let options = [];
-                const optionNames = Object.keys(res.data);
+            const teacher = this.prepareTeacherDataForView(res[0].data, res[1].data);
 
-                optionNames.forEach(optionName => {
-                    options[optionName] = this.adjustToSelect(res.data[optionName]);
-                });
-
-                this.setState({
-                    ...this.state,
-                    options
-                });
-            }
-        );
-
-        Promise.all([teacherPromise, optionsPromise]).then(() => {
             this.setState({
                 ...this.state,
+                teacher,
+                options,
                 loaded: true
             });
-        });
+
+        }).catch(rej => {
+                Token.remove();
+                this.props.history.push('/teacher');
+            }
+        );
     }
 
 
@@ -245,7 +248,8 @@ class TeacherForm extends Component {
                 ...this.state,
                 teacher: {
                     ...this.state.teacher,
-                    [name]: checkBoxOptions
+                    [name]: checkBoxOptions,
+                    viewLevels: this.getViewLevels(this.state.teacher, checkBoxOptions)
                 }
             },
             this.resetValidation
@@ -301,6 +305,7 @@ class TeacherForm extends Component {
             } = this.state.validationResult;
 
             return (
+            <React.Fragment>
                 <Form onSubmit={this.handleSubmit} error={errorForm}>
                     <Grid container doubling stackable>
                         <Grid.Row>
@@ -455,12 +460,13 @@ class TeacherForm extends Component {
 
                         <Grid.Row>
                             <Grid.Column>
-                                <Form.Button>Добавить</Form.Button>
+                                <Form.Button>Сохранить</Form.Button>
                             </Grid.Column>
                         </Grid.Row>
 
                     </Grid>
                 </Form>
+            </React.Fragment>
             );
         } else {
             return <Loader/>;
@@ -468,4 +474,4 @@ class TeacherForm extends Component {
     }
 }
 
-export default TeacherForm;
+export default withRouter(TeacherForm);
