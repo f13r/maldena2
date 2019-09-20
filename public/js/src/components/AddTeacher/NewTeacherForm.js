@@ -3,46 +3,17 @@ import { Form, Input, Select,  Checkbox, TextArea } from 'formsy-semantic-ui-rea
 import {Grid, Image, Icon, Divider, Button, FormGroup, Label } from 'semantic-ui-react';
 import PhoneInput from '../CustomInput/PhoneInput';
 import CheckBoxGroup from '../CustomInput/CheckBoxGroup';
+import { addValidationRule, validationRules } from 'formsy-react';
 
 const NewTeacherForm = (props) => {
 
+    addValidationRule('ifCheckedRequired', function(values, value, otherField) {
+        console.log(values, value, otherField);
+        return true;
+    });
+
+    console.log(validationRules, 'rulse')
     const errorLabel = <Label color="red" pointing/>;
-    let checkedLevels = Array.from(props.teacher.levels);
-
-    const mapInputs = (inputs) => {
-        return {
-            ...inputs,
-            levels: checkedLevels || []
-        }
-    };
-
-    const submit = (model) => {
-        console.log(model);
-    };
-
-    const checkLevel = checkedLevel => (e, {checked}) => {
-        checked ? checkedLevels.push(checkedLevel) :
-                  checkedLevels = checkedLevels.filter(item => item !== checkedLevel);
-    }
-
-    const getLevels = () => {
-        // const { levels } = props.options;
-        // const {levels: teacherLevels = []} = props.teacher;
-
-        // return levels.map((level) => {
-        //         return <Checkbox
-        //             name='levels[]'
-        //             defaultChecked={teacherLevels.includes(level.value)}
-        //             key={level.value}
-        //             label={level.text}
-        //             onChange={checkLevel(level.value)}
-        //             />
-        //     }
-        // );
-    };
-
-    console.log(props);
-    
 
     const { 
         showHome, showVenue, showSkype,
@@ -54,12 +25,18 @@ const NewTeacherForm = (props) => {
 
     const { levels, teacherExperiences, lessonDurations } = props.options;
 
+    console.log(props, 'teacher');
+
     return (
-            <Form onValidSubmit={ submit } mapping={ mapInputs } onChange={ props.onTeacherChange }>
+            <Form onValidSubmit={ props.submitTeacher } onChange={ props.onTeacherChange }>
                 <Grid container doubling stackable>
                     <Grid.Row>
                         <Grid.Column width={5}>
-                            <Image centered src={photo}/>
+                            <Image 
+                                centered
+                                src={photo}
+                                />
+                            <Input type='hidden' name='photo' value={photo}/>
                         </Grid.Column>
                         <Grid.Column width={11}>
                             <FormGroup widths='equal'>
@@ -116,7 +93,6 @@ const NewTeacherForm = (props) => {
                             </FormGroup>
                             <FormGroup widths='equal'>
                                 <TextArea
-                                    label='Образование'
                                     errorLabel={errorLabel}
                                     required
                                     validationErrors={{
@@ -191,6 +167,7 @@ const NewTeacherForm = (props) => {
                                 defaultChecked={showSkype}
                             />
                             <Input
+                                validations='ifCheckedRequired:name'
                                 disabled={!showSkype}
                                 label='Домашний адрес'
                                 fluid
@@ -207,17 +184,16 @@ const NewTeacherForm = (props) => {
                     <Divider horizontal>Уровни преподования</Divider>
                     <Grid.Row>
                         <Grid.Column>
-                            <CheckBoxGroup 
-                                name='levels' 
-                                checkedOptions={props.teacher.levels}
-                                options={levels}
-                                />
+                                <CheckBoxGroup 
+                                    name='levels' 
+                                    checkedOptions={props.teacher.levels}
+                                    options={levels}
+                                    />
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column>
                             <TextArea
-                                label='О себе'
                                 value={description}
                                 required
                                 validationErrors={{

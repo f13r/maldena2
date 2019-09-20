@@ -1,15 +1,15 @@
 import React from 'react';
-import { Input } from 'formsy-semantic-ui-react';
-import { Icon, Checkbox } from 'semantic-ui-react';
+import { Checkbox, FormField } from 'semantic-ui-react';
 import { withFormsy } from 'formsy-react';
 
 class CheckBoxGroup extends React.Component {
-
 
   constructor(props) {
     super(props);
     this.changeValue = this.changeValue.bind(this);
     this.checked = this.props.checkedOptions;
+
+    this.props.setValue(this.props.checkedOptions);
   }
 
   changeValue(e, { checked, value }) {
@@ -24,14 +24,15 @@ class CheckBoxGroup extends React.Component {
     const { options, checkedOptions } = this.props;
     
     return options.map((option, i) => (
+      <FormField key={option.value}>
         <Checkbox
           name={'level[' + option.value + ']'}
           defaultChecked={checkedOptions.includes(option.value)}
-          key={option.value}
           label={option.text}
           value={option.value}
           onChange={this.changeValue}
         />
+      </FormField>
     ));
      
   }

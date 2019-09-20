@@ -1,8 +1,17 @@
-export function TeacherFormAdapter(teacher) {
+export function TeacherFormViewAdapter(teacher) {
 
     teacher.showVenue = teacher.venue !== '';
     teacher.showHome = teacher.home !== '';
     teacher.showSkype = teacher.skype !== '';
+
+    return teacher;
+}
+
+export function TeacherFormSubmitAdapter(teacher) {
+
+    teacher.venue = teacher.showVenue ? teacher.venue : '';
+    teacher.home = teacher.showHome ? teacher.home : '';
+    teacher.skype = teacher.showSkype ? teacher.skype : '';
 
     return teacher;
 }

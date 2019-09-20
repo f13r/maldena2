@@ -305,7 +305,7 @@ class TeacherForm extends Component {
             } = this.state.validationResult;
 
             return (
-            <React.Fragment>
+            <React.Fragment> 
                 <Form onSubmit={this.handleSubmit} error={errorForm}>
                     <Grid container doubling stackable>
                         <Grid.Row>

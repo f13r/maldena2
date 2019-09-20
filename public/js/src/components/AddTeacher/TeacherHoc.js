@@ -1,11 +1,9 @@
 import React from 'react';
 import Token from "../../helpers/token";
 import { Header, Button, Icon } from 'semantic-ui-react';
-
-import TeacherForm from "./TeacherForm";
 import NewTeacherForm from "./NewTeacherForm";
 import axios from "axios";
-import { TeacherFormAdapter, AdjustToSelect } from '../../helpers/Adapters/TeacherAdapter';
+import { TeacherFormViewAdapter, AdjustToSelect, TeacherFormSubmitAdapter } from '../../helpers/Adapters/TeacherAdapter';
 
 class TeacherHoc extends React.Component {
 
@@ -20,6 +18,8 @@ class TeacherHoc extends React.Component {
     constructor() {
       super();
       this.onTeacherChange = this.onTeacherChange.bind(this);
+      this.submitTeacher = this.submitTeacher.bind(this);
+
     }
 
     componentDidMount() {
@@ -35,10 +35,7 @@ class TeacherHoc extends React.Component {
                 this.options[optionName] = AdjustToSelect(res[1].data[optionName]);
             });
 
-            // this.options = options;
-            
-            const teacher = TeacherFormAdapter(res[0].data);
-
+            const teacher = TeacherFormViewAdapter(res[0].data);
 
             this.setState({
                 ...this.state,
@@ -53,16 +50,19 @@ class TeacherHoc extends React.Component {
         );
   }
 
-  onTeacherChange(...args) {
-    console.log(args, 'hteact');
-    // this.setState({
-    //   teacher
-    // });
+  submitTeacher(model) {
+    axios.post('api/teacher', TeacherFormSubmitAdapter(model));
+  }
+
+  onTeacherChange(teacher) {
+    this.setState({ teacher });
   }
 
 	render() {
-    console.log(this.state, 'state');
-    
+    // addValidationRule('ifCheckedRequired', function(values, value, otherField) {
+    // console.log(values, value, otherField);
+
+    // });
     
 	    return (
         <React.Fragment>
@@ -81,7 +81,7 @@ class TeacherHoc extends React.Component {
                 <React.Fragment>
                  <Header as = 'h2'>Заполни форму чтобы cтать частью Maldena English Society</Header>
                   <br/> 
-                  <NewTeacherForm teacher={this.state.teacher} options={this.options} onTeacherChange={this.onTeacherChange}/>
+                  <NewTeacherForm teacher={this.state.teacher} submitTeacher={this.submitTeacher} options={this.options} onTeacherChange={this.onTeacherChange}/>
                 </React.Fragment>
             )
         }
