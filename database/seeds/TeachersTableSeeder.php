@@ -17,7 +17,7 @@ class TeachersTableSeeder extends Seeder
         $faker = Faker::create('uk_UA');
         for ($i = 0; $i <= 20; $i++) {
             DB::table('teachers')->insert([
-                'user_id'           => 2,
+                'user_id'           => 1,
                 'photo'          => $faker->imageUrl(),
                 'name'           => $faker->name,
                 'phone'          => $faker->phoneNumber,

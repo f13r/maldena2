@@ -18,17 +18,17 @@ class CreateTeachersTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('photo');
             $table->string('name');
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->string('email');
-            $table->smallInteger('experience');
-            $table->text('education');
-            $table->smallInteger('lessonDuration');
-            $table->string('lessonPrice');
+            $table->smallInteger('experience')->nullable();
+            $table->text('education')->nullable();
+            $table->smallInteger('lessonDuration')->nullable();
+            $table->string('lessonPrice')->nullable();
             $table->text('venue')->nullable();
             $table->text('home')->nullable();
             $table->smallInteger('skype')->nullable();
-            $table->integer('teachingLevels');
-            $table->text('description');
+            $table->integer('teachingLevels')->nullable();;
+            $table->text('description')->nullable();;
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
