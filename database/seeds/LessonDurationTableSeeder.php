@@ -17,7 +17,7 @@ class LessonDurationTableSeeder extends Seeder
             '30 минут',
             '45 минут',
             '1 час',
-            '1 час 30 минут'
+            '1.5 часа'
         ];
 
         foreach ($values as $value) {
