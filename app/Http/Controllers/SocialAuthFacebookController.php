@@ -52,4 +52,17 @@ class SocialAuthFacebookController extends Controller
 
         return redirect('//localhost:3000/getToken?jwt-token=' . JWTAuth::fromUser($user));
     }
+
+    /**
+     * Log out
+     *
+     * @return mixed
+     */
+    public function logout()
+    {
+        Auth::logout();
+        JWTAuth::logout(true);
+
+        return 'ok';
+    }
 }
