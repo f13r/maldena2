@@ -77,7 +77,6 @@ class TeacherForm extends Component {
     };
 
     getViewLevels(teacher, optionsLevels) {
-        console.log(teacher, optionsLevels, 'hoo');
 
         return optionsLevels.map(level => {
             if (teacher.levels.includes(level.id)) {
@@ -305,7 +304,7 @@ class TeacherForm extends Component {
             } = this.state.validationResult;
 
             return (
-            <React.Fragment> 
+            <React.Fragment>
                 <Form onSubmit={this.handleSubmit} error={errorForm}>
                     <Grid container doubling stackable>
                         <Grid.Row>

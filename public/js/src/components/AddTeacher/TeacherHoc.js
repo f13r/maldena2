@@ -1,9 +1,18 @@
 import React from 'react';
-import Token from "../../helpers/token";
-import { Header, Button, Icon } from 'semantic-ui-react';
-import NewTeacherForm from "./NewTeacherForm";
 import axios from "axios";
-import { TeacherFormViewAdapter, AdjustToSelect, TeacherFormSubmitAdapter } from '../../helpers/Adapters/TeacherAdapter';
+import { Header, Button, Icon, Divider } from 'semantic-ui-react';
+
+import {
+  TeacherFormOptionsAdapter,
+  TeacherFormSubmitAdapter,
+  TeacherFormViewAdapter,
+  TeacherViewAdapter
+} from '../../helpers/Adapters/TeacherAdapter';
+import NewTeacherForm from "./NewTeacherForm";
+import TeacherView from '../TeacherList/TeacherView'
+import Token from "../../helpers/token";
+
+const defaultOptions = {};
 
 class TeacherHoc extends React.Component {
 
@@ -19,7 +28,6 @@ class TeacherHoc extends React.Component {
       super();
       this.onTeacherChange = this.onTeacherChange.bind(this);
       this.submitTeacher = this.submitTeacher.bind(this);
-
     }
 
     componentDidMount() {
@@ -28,13 +36,7 @@ class TeacherHoc extends React.Component {
         const optionsPromise = axios.get('/api/options');
 
         Promise.all([teacherPromise, optionsPromise]).then((res) => {
-
-            const optionNames = Object.keys(res[1].data);
-
-            optionNames.forEach(optionName => {
-                this.options[optionName] = AdjustToSelect(res[1].data[optionName]);
-            });
-
+            this.options = res[1].data;
             const teacher = TeacherFormViewAdapter(res[0].data);
 
             this.setState({
@@ -42,7 +44,6 @@ class TeacherHoc extends React.Component {
                 teacher,
                 loaded: true
             });
-
         }).catch(rej => {
                 Token.remove();
                 this.props.history.push('/teacher');
@@ -50,8 +51,9 @@ class TeacherHoc extends React.Component {
         );
   }
 
-  submitTeacher(model) {
-    axios.post('api/teacher', TeacherFormSubmitAdapter(model));
+  submitTeacher(...args) {
+    console.log('args', args);
+    // axios.post('api/teacher', TeacherFormSubmitAdapter(model));
   }
 
   onTeacherChange(teacher) {
@@ -59,11 +61,7 @@ class TeacherHoc extends React.Component {
   }
 
 	render() {
-    // addValidationRule('ifCheckedRequired', function(values, value, otherField) {
-    // console.log(values, value, otherField);
-
-    // });
-    
+    console.log(TeacherFormOptionsAdapter(this.options), 'options');
 	    return (
         <React.Fragment>
         {
@@ -76,12 +74,22 @@ class TeacherHoc extends React.Component {
                   <Icon name='facebook' /> Facebook
                 </Button>
               </a>
-            </div>) : 
-               this.state.loaded && ( 
+            </div>) :
+               this.state.loaded && (
                 <React.Fragment>
                  <Header as = 'h2'>Заполни форму чтобы cтать частью Maldena English Society</Header>
-                  <br/> 
-                  <NewTeacherForm teacher={this.state.teacher} submitTeacher={this.submitTeacher} options={this.options} onTeacherChange={this.onTeacherChange}/>
+                  <br/>
+                  <NewTeacherForm
+                    teacher={this.state.teacher}
+                    submitTeacher={this.submitTeacher}
+                    options={TeacherFormOptionsAdapter(this.options)}
+                    onTeacherChange={this.onTeacherChange}
+                    />
+                  <br/>
+                <Divider section></Divider>
+                  <TeacherView
+                    teacher={TeacherViewAdapter(this.state.teacher, this.options)}
+                    />
                 </React.Fragment>
             )
         }

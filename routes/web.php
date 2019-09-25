@@ -19,16 +19,18 @@ $router->get('/', function () use ($router) {
 $router->get('/callback', 'SocialAuthFacebookController@callback');
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/login', 'SocialAuthFacebookController@redirect');
+    $router->get('teachers',  ['uses' => 'TeachersController@showAllTeachers']);
+    $router->get('options',  ['uses' => 'OptionsController@get']);
+    $router->get('user',  ['uses' => 'UserController@get']);
 });
 
 
 $router->group(['middleware' => ['jwt'], 'prefix' => 'api'], function () use ($router) {
-    $router->get('teachers',  ['uses' => 'TeachersController@showAllTeachers']);
     $router->get('teacher/{id}', ['uses' => 'TeachersController@showOneTeacher']);
     $router->get('teacher', ['uses' => 'TeachersController@showMyTeacher']);
-    $router->post('teacher', ['uses' => 'TeachersController@update']);
+    $router->post('teacher', ['uses' => 'TeachersController@post']);
+    $router->update('teacher', ['uses' => 'TeachersController@update']);
     $router->delete('teachers/{id}', ['uses' => 'TeachersController@delete']);
     $router->put('teachers/{id}', ['uses' => 'TeachersController@update']);
-
-    $router->get('options',  ['uses' => 'OptionsController@get']);
+    $router->get('/logout', 'SocialAuthFacebookController@logout');
 });
