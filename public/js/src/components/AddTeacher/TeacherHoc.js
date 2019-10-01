@@ -2,6 +2,8 @@ import React from 'react';
 import axios from "axios";
 import { Header, Button, Icon, Divider } from 'semantic-ui-react';
 
+import TeacherView from '../TeacherList/TeacherView'
+
 import {
   TeacherFormOptionsAdapter,
   TeacherFormSubmitAdapter,
@@ -9,10 +11,8 @@ import {
   TeacherViewAdapter
 } from '../../helpers/Adapters/TeacherAdapter';
 import NewTeacherForm from "./NewTeacherForm";
-import TeacherView from '../TeacherList/TeacherView'
 import Token from "../../helpers/token";
 
-const defaultOptions = {};
 
 class TeacherHoc extends React.Component {
 
@@ -61,7 +61,6 @@ class TeacherHoc extends React.Component {
   }
 
 	render() {
-    console.log(TeacherFormOptionsAdapter(this.options), 'options');
 	    return (
         <React.Fragment>
         {
@@ -84,12 +83,9 @@ class TeacherHoc extends React.Component {
                     submitTeacher={this.submitTeacher}
                     options={TeacherFormOptionsAdapter(this.options)}
                     onTeacherChange={this.onTeacherChange}
+                    teacherView={<TeacherView teacher={TeacherViewAdapter(this.state.teacher, this.options)} />}
                     />
                   <br/>
-                <Divider section></Divider>
-                  <TeacherView
-                    teacher={TeacherViewAdapter(this.state.teacher, this.options)}
-                    />
                 </React.Fragment>
             )
         }

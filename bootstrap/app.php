@@ -1,9 +1,4 @@
 <?php
-
-
-use App\Services\ViewServices\DefaultTeacherViewService;
-use App\Services\ViewServices\Interfaces\TeacherViewInterface;
-
 require_once __DIR__.'/../vendor/autoload.php';
 
 try {

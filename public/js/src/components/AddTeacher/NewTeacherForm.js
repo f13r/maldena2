@@ -1,9 +1,8 @@
 import React from 'react';
 import { Form, Input, Select,  Checkbox, TextArea } from 'formsy-semantic-ui-react';
-import {Grid, Image, Icon, Divider, Button, FormGroup, Label } from 'semantic-ui-react';
+import {Grid, Image, Divider, Button, FormGroup, Label, Header, Icon } from 'semantic-ui-react';
 import PhoneInput from '../CustomInput/PhoneInput';
 import CheckBoxGroup from '../CustomInput/CheckBoxGroup';
-import { addValidationRule } from 'formsy-react';
 
 const NewTeacherForm = (props) => {
 
@@ -30,8 +29,10 @@ const NewTeacherForm = (props) => {
                                 centered
                                 src={photo}
                                 />
-                            <Input type='hidden' name='photo' value={photo}/>
-                            <Input type='hidden' name='id' value={id}/>
+                                <div style={{'display':'none'}}>
+                                    <Input type='hidden' name='photo' value={photo}/>
+                                    <Input type='hidden' name='id' value={id}/>
+                                </div>
                         </Grid.Column>
                         <Grid.Column width={11}>
                             <FormGroup widths='equal'>
@@ -79,6 +80,7 @@ const NewTeacherForm = (props) => {
                                     value={experience}
                                     name='experience'
                                     options={teacherExperiences}
+                                    placeholder='Опыт работы'
                                     >
                                 </Select>
                             </FormGroup>
@@ -96,13 +98,21 @@ const NewTeacherForm = (props) => {
                             </FormGroup>
                         </Grid.Column>
                     </Grid.Row>
-                    <Divider horizontal>Об уроках</Divider>
+                </Grid>
+                <Divider horizontal section>
+                    <Header as='h5'>
+                        <Icon name='student' />
+                        Об уроках
+                    </Header>
+                </Divider>
+                <Grid container doubling stackable>
                     <Grid.Row>
                         <Grid.Column width={8}>
                             <Select
                                 fluid
                                 value={lessonDuration}
                                 options={lessonDurations}
+                                placeholder='Длинна урока'
                                 name='lessonDuration'>
                             </Select>
                         </Grid.Column>
@@ -165,7 +175,14 @@ const NewTeacherForm = (props) => {
                                 placeholder='Skype адрес'/>
                         </Grid.Column>
                     </Grid.Row>
-                    <Divider horizontal>Уровни преподования</Divider>
+                </Grid>
+                <Divider horizontal section>
+                    <Header as='h5'>
+                        <Icon name='tasks'/>
+                        Уровни преподования
+                    </Header>
+                </Divider>
+                <Grid container doubling stackable>
                     <Grid.Row>
                         <Grid.Column>
                                 <CheckBoxGroup
@@ -175,6 +192,14 @@ const NewTeacherForm = (props) => {
                                     />
                         </Grid.Column>
                     </Grid.Row>
+                </Grid>
+                <Divider horizontal section>
+                    <Header as='h5'>
+                        <Icon name='user'/>
+                        О себе
+                    </Header>
+                </Divider>
+                <Grid container doubling stackable>
                     <Grid.Row>
                         <Grid.Column>
                             <TextArea
@@ -184,8 +209,21 @@ const NewTeacherForm = (props) => {
                                   isDefaultRequiredValue: 'Расскажите больше о себе',
                                 }}
                                 name='description'
-                                placeholder='Напишите о себе, чтобы заинтерисовать возможных студентов'
+                                placeholder='Напишите о себе, чтобы заинтерисовать возможных студентов и выбрать именно вас для обучения'
                              />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+                <Divider horizontal section>
+                    <Header as='h5'>
+                        <Icon name='address card' />
+                        Так вас будут видеть студенты
+                    </Header>
+                </Divider>
+                <Grid container doubling stackable>
+                    <Grid.Row>
+                        <Grid.Column>
+                            { props.teacherView }
                         </Grid.Column>
                     </Grid.Row>
 

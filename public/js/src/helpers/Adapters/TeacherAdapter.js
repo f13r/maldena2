@@ -33,6 +33,8 @@ export function TeacherFormSubmitAdapter(teacher) {
 }
 
 export function TeacherViewAdapter(teacher, options) {
+    console.log(teacher, options)
+
     teacher.viewLevels = options.levels.map(level => {
         if (teacher.levels.includes(level.id)) {
             return level.value;
@@ -57,5 +59,5 @@ function getValueFromOptions(value, options) {
         return option.id === value;
     });
 
-    return typeof result.value !== 'undefined' && result.value || '';
+    return typeof result !== 'undefined' && typeof result.value !== 'undefined' && result.value || '';
 }

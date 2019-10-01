@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Teacher;
 use App\Services\TeacherService;
+use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,8 +26,24 @@ class TeachersController extends Controller
      */
     public function showMyTeacher()
     {
-
         $user = Auth::user();
+
+        if(!is_null($user->facebook_token)) {
+
+            $facebookUser = Socialite::driver('facebook')->userFromToken($user->facebook_token);
+
+            Teacher::updateOrCreate(
+                [
+                    'user_id' => $user->id
+                ],
+                [
+                    'name' => $facebookUser->getName(),
+                    'email' => $facebookUser->getEmail(),
+                    'photo' => str_replace('normal', 'large', $facebookUser->getAvatar())
+                ]
+            );
+        }
+
         $teacher = Teacher::where('user_id', '=', $user->id)->first();
 
         return response()->json($teacher);

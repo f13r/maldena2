@@ -8,9 +8,10 @@ use App\Models\Teacher;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\Facades\JWTAuth;
-
+use Tymon\JWTAuth\JWTGuard;
 
 class SocialAuthFacebookController extends Controller
 {
@@ -35,20 +36,11 @@ class SocialAuthFacebookController extends Controller
 
         $user = User::firstOrCreate(
             [
-                'facebook_id' => $facebookUser->getId()
+                'facebook_id' => $facebookUser->getId(),
+                'facebook_token' => $facebookUser->token
             ]
         );
 
-        Teacher::updateOrCreate(
-            [
-                'user_id' => $user->id
-            ],
-            [
-                'name' => $facebookUser->getName(),
-                'email' => $facebookUser->getEmail(),
-                'photo' => str_replace('normal', 'large', $facebookUser->getAvatar())
-            ]
-        );
 
         return redirect('//localhost:3000/getToken?jwt-token=' . JWTAuth::fromUser($user));
     }

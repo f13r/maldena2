@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom'
 import MaskedInput from "react-text-mask";
 import Token from "../../helpers/token";
 import axios from 'axios';
+import TeacherView from "./TeacherHoc";
+import {TeacherViewAdapter} from "../../helpers/Adapters/TeacherAdapter";
 
 class TeacherForm extends Component {
 
@@ -456,6 +458,9 @@ class TeacherForm extends Component {
                                                onChange={this.handleChange}/>
                             </Grid.Column>
                         </Grid.Row>
+                        <TeacherView
+                            teacher={TeacherViewAdapter(this.state.teacher, this.options)}
+                        />
 
                         <Grid.Row>
                             <Grid.Column>

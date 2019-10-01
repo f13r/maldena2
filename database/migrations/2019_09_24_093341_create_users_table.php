@@ -15,7 +15,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('facebook_id');
+            $table->string('facebook_id');
+            $table->string('facebook_token');
             $table->smallInteger('is_admin')->default(0);
             $table->timestamps();
         });
