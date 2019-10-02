@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from "axios";
-import { Header, Button, Icon, Divider } from 'semantic-ui-react';
+import {Header, Button, Icon, Divider, Form} from 'semantic-ui-react';
 
 import TeacherView from '../TeacherList/TeacherView'
 
@@ -76,8 +76,11 @@ class TeacherHoc extends React.Component {
             </div>) :
                this.state.loaded && (
                 <React.Fragment>
-                 <Header as = 'h2'>Заполни форму чтобы cтать частью Maldena English Society</Header>
-                  <br/>
+                <Divider  horizontal section>
+                    <Header as='h2'>
+                        Заполни форму чтобы cтать частью Maldena English Society
+                    </Header>
+                </Divider>
                   <NewTeacherForm
                     teacher={this.state.teacher}
                     submitTeacher={this.submitTeacher}
