@@ -3,47 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
-use App\Services\ViewServices\Interfaces\TeacherViewInterface;
+use App\User;
 use App\Services\TeacherService;
+use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TeachersController extends Controller
 {
 
-    public function showAllTeachers(TeacherViewInterface $view, TeacherService $teacherService)
+    public function showAllTeachers()
     {
-        $teachers = $view->adjustForView(Teacher::all(), $teacherService->getTeachersOptions());
-        return response()->json($teachers);
+        return response()->json(Teacher::all());
     }
 
-    public function showOneTeacher($id)
-    {
-        return response()->json(Teacher::find($id));
-    }
 
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showMyTeacher(TeacherViewInterface $view)
+    public function get($teacherId)
     {
-
-        $user = Auth::user();
-        $teacher = Teacher::where('user_id', '=', $user->id)->first();
-
-        return response()->json($teacher);
+        return response()->json(Teacher::find($teacherId));
     }
 
-    public function create(Request $request)
+    public function post(Request $request, TeacherService $teacherService)
     {
-        $author = Teacher::create($request->all());
+        $user = Auth::user();
+        $saveParams = $request->all();
+        $saveParams['user_id'] = $user->id;
 
-        return response()->json($author, 201);
+        $user->update($saveParams);
+        $teacher = $teacherService->createTeacher($saveParams);
+
+        return response()->json($teacher, 201);
     }
 
     public function update(Request $request, TeacherService $teacherService)
     {
-        $teacher = $teacherService->saveTeacher($request->all());
+        $teacher = $teacherService->updateTeacher($request->all());
         return response()->json($teacher, 200);
     }
 

@@ -13,13 +13,15 @@ import {
   Divider,
   Button,
   FormGroup,
-  Label
+  Label,
+  Header
 } from "semantic-ui-react";
 import PhoneInput from "../CustomInput/PhoneInput";
 import CheckBoxGroup from "../CustomInput/CheckBoxGroup";
-import {addValidationRule, validationRules} from "formsy-react";
+import { addValidationRule } from "formsy-react";
 
 const NewTeacherForm = props => {
+  console.log(props, "newform");
   addValidationRule("ifCheckedRequired", function(values, value, otherField) {
     if (!!values[otherField]) {
       return !!value;
@@ -29,6 +31,7 @@ const NewTeacherForm = props => {
   const errorLabel = <Label color="red" pointing />;
 
   const {
+    id,
     showHome,
     showVenue,
     showSkype,
@@ -46,21 +49,26 @@ const NewTeacherForm = props => {
     lessonDuration
   } = props.teacher;
 
-  const {levels, teacherExperiences, lessonDurations} = props.options;
+  const { levels, teacherExperiences, lessonDurations } = props.options;
 
+  console.log(props.teacher);
   return (
-    <Form onValidSubmit={props.submitTeacher} onChange={props.onTeacherChange}>
+    <Form onValidSubmit={props.saveTeacher} onChange={props.onTeacherChange}>
       <Grid container doubling stackable>
         <Grid.Row>
           <Grid.Column width={5}>
             <Image centered src={photo} />
-            <Input type="hidden" name="photo" value={photo} />
+            <div style={{ display: "none" }}>
+              <Input type="hidden" name="photo" value={photo} />
+              {!!id && <Input type="hidden" name="id" value={id} />}
+            </div>
           </Grid.Column>
           <Grid.Column width={11}>
             <FormGroup widths="equal">
               <Input
                 fluid
                 iconPosition="left"
+                icon="user"
                 name="name"
                 required
                 value={name}
@@ -69,10 +77,7 @@ const NewTeacherForm = props => {
                   isDefaultRequiredValue: "Нам нужно ваше имя, оде..."
                 }}
                 placeholder="Имя и Фамилия"
-              >
-                <Icon name="user" />
-                <input />
-              </Input>
+              />
               <PhoneInput
                 required
                 name="phone"
@@ -91,6 +96,7 @@ const NewTeacherForm = props => {
                 validations="isEmail"
                 required
                 iconPosition="left"
+                icon="at"
                 type="email"
                 name="email"
                 errorLabel={errorLabel}
@@ -99,22 +105,14 @@ const NewTeacherForm = props => {
                   isEmail: "Некоректний E-mail"
                 }}
                 placeholder="E-mail"
-              >
-                <Icon name="at" />
-                <input />
-              </Input>
+              />
               <Select
                 fluid
                 label="Опыт работы"
                 value={experience}
                 name="experience"
-                placeholder={teacherExperiences[0].text}
                 options={teacherExperiences}
-                required
-                errorLabel={errorLabel}
-                validationErrors={{
-                  isDefaultRequiredValue: "Ваш опыт работы"
-                }}
+                placeholder="Опыт работы"
               ></Select>
             </FormGroup>
             <FormGroup widths="equal">
@@ -132,27 +130,31 @@ const NewTeacherForm = props => {
             </FormGroup>
           </Grid.Column>
         </Grid.Row>
-        <Divider horizontal>Об уроках</Divider>
+      </Grid>
+      <Divider horizontal section>
+        <Header as="h5">
+          <Icon name="student" />
+          Об уроках
+        </Header>
+      </Divider>
+      <Grid container doubling stackable>
         <Grid.Row>
           <Grid.Column width={8}>
             <Select
               fluid
               value={lessonDuration}
-              required
-              errorLabel={errorLabel}
-              validationErrors={{
-                isDefaultRequiredValue: "Длина урока"
-              }}
               options={lessonDurations}
-              placeholder={lessonDurations[0].text}
+              placeholder="Длинна урока"
               name="lessonDuration"
             ></Select>
           </Grid.Column>
           <Grid.Column width={8}>
             <Input
               fluid
-              iconPosition="left"
               required
+              type="number"
+              label={{ basic: true, content: "грн." }}
+              labelPosition="right"
               validations="isNumeric"
               errorLabel={errorLabel}
               validationErrors={{
@@ -162,10 +164,7 @@ const NewTeacherForm = props => {
               value={lessonPrice}
               name="lessonPrice"
               placeholder="Цена одного урока"
-            >
-              <Icon name="money" />
-              <input />
-            </Input>
+            />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
@@ -176,11 +175,6 @@ const NewTeacherForm = props => {
               defaultChecked={showVenue}
             />
             <TextArea
-              validations="ifCheckedRequired:showVenue"
-              errorLabel={errorLabel}
-              validationErrors={{
-                ifCheckedRequired: "Введите районы",
-              }}
               disabled={!showVenue}
               label="Районы"
               value={venue}
@@ -193,11 +187,6 @@ const NewTeacherForm = props => {
               name="showHome"
             />
             <TextArea
-              validations="ifCheckedRequired:showHome"
-              validationErrors={{
-                ifCheckedRequired: "Введите домашний адрес",
-              }}
-              errorLabel={errorLabel}
               disabled={!showHome}
               label="Домашний адрес"
               value={home}
@@ -210,26 +199,24 @@ const NewTeacherForm = props => {
               defaultChecked={showSkype}
             />
             <Input
-              validations="ifCheckedRequired:showSkype"
-              validationErrors={{
-                ifCheckedRequired: "Введите Skype",
-              }}
-              errorLabel={errorLabel}
               disabled={!showSkype}
-              label="Домашний адрес"
               fluid
               value={skype}
               iconPosition="left"
-              type="skype"
+              icon="skype"
               name="skype"
               placeholder="Skype адрес"
-            >
-              <Icon name="skype" />
-              <input />
-            </Input>
+            />
           </Grid.Column>
         </Grid.Row>
-        <Divider horizontal>Уровни преподования</Divider>
+      </Grid>
+      <Divider horizontal section>
+        <Header as="h5">
+          <Icon name="tasks" />
+          Уровни преподования
+        </Header>
+      </Divider>
+      <Grid container doubling stackable>
         <Grid.Row>
           <Grid.Column>
             <CheckBoxGroup
@@ -239,6 +226,13 @@ const NewTeacherForm = props => {
             />
           </Grid.Column>
         </Grid.Row>
+      </Grid>
+      <Divider horizontal section>
+        <Header as="h5">
+          <Icon name="user" />О себе
+        </Header>
+      </Divider>
+      <Grid container doubling stackable>
         <Grid.Row>
           <Grid.Column>
             <TextArea
@@ -248,14 +242,27 @@ const NewTeacherForm = props => {
                 isDefaultRequiredValue: "Расскажите больше о себе"
               }}
               name="description"
-              placeholder="Напишите о себе, чтобы заинтерисовать возможных студентов"
+              placeholder="Напишите о себе, чтобы заинтерисовать возможных студентов и выбрать именно вас для обучения"
             />
           </Grid.Column>
         </Grid.Row>
+      </Grid>
+      <Divider horizontal section>
+        <Header as="h5">
+          <Icon name="address card" />
+          Так вас будут видеть студенты
+        </Header>
+      </Divider>
+      <Grid container doubling stackable>
+        <Grid.Row>
+          <Grid.Column>{props.teacherView}</Grid.Column>
+        </Grid.Row>
 
         <Grid.Row>
-          <Grid.Column>
-            <Button type="submit">Сохранить</Button>
+          <Grid.Column textAlign="center">
+            <Button color="orange" size="large" type="submit">
+              Сохранить
+            </Button>
           </Grid.Column>
         </Grid.Row>
       </Grid>

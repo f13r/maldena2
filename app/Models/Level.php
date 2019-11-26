@@ -22,4 +22,5 @@ class Level extends Model
      * @var array
      */
     protected $hidden = [];
+
 }

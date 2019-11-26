@@ -1,24 +1,21 @@
+const tokenName = "jwt-token";
 
-const tokenName = 'jwt-token';
+const Token = {
+  get: function() {
+    return localStorage.getItem(tokenName);
+  },
 
-const Token =  {
+  set: function(jwtToken) {
+    return localStorage.setItem(tokenName, jwtToken);
+  },
 
-	get: function() {
-        return localStorage.getItem(tokenName) || this.fetchToken();
-	},
+  remove: function() {
+    return localStorage.removeItem(tokenName);
+  },
 
-	set: function(jwtToken) {
-		return localStorage.setItem(tokenName, jwtToken);
-	},
-
-	remove: function() {
-		return localStorage.removeItem(tokenName);
-	},
-
-    fetchToken: function() {
-        return new URL(window.location.href).searchParams.get(tokenName);
-    }
-
+  exist: function() {
+    return !!localStorage.getItem(tokenName);
+  },
 };
 
 export default Token;

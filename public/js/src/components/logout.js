@@ -1,11 +1,13 @@
-import Token from "../helpers/token";
+import { connect } from "react-redux";
+import { removeUser } from "../helpers/user";
 
-const Logout = (props) => {
+const Logout = props => {
+  const { history, dispatch } = props;
 
-	Token.remove();
-	props.history.push('/');
+  removeUser(dispatch);
+  history.push("/");
 
-	return null;
+  return null;
 };
 
-export default Logout;
+export default connect()(Logout);

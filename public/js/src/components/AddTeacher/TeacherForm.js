@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom'
 import MaskedInput from "react-text-mask";
 import Token from "../../helpers/token";
 import axios from 'axios';
+import TeacherView from "./TeacherHoc";
+import {TeacherViewAdapter} from "../../helpers/Adapters/TeacherAdapter";
 
 class TeacherForm extends Component {
 
@@ -77,7 +79,6 @@ class TeacherForm extends Component {
     };
 
     getViewLevels(teacher, optionsLevels) {
-        console.log(teacher, optionsLevels, 'hoo');
 
         return optionsLevels.map(level => {
             if (teacher.levels.includes(level.id)) {
@@ -305,7 +306,7 @@ class TeacherForm extends Component {
             } = this.state.validationResult;
 
             return (
-            <React.Fragment> 
+            <React.Fragment>
                 <Form onSubmit={this.handleSubmit} error={errorForm}>
                     <Grid container doubling stackable>
                         <Grid.Row>
@@ -457,6 +458,9 @@ class TeacherForm extends Component {
                                                onChange={this.handleChange}/>
                             </Grid.Column>
                         </Grid.Row>
+                        <TeacherView
+                            teacher={TeacherViewAdapter(this.state.teacher, this.options)}
+                        />
 
                         <Grid.Row>
                             <Grid.Column>

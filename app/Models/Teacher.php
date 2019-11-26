@@ -14,7 +14,7 @@ class Teacher extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'name', 'email', 'facebook', 'photo', 'lessonDuration', 'phone', 'venue', 'home',
+        'user_id', 'facebook', 'lessonDuration', 'phone', 'venue', 'home',
         'age', 'sex',  'experience', 'description', 'lessonPrice', 'education', 'skype', 'created_at'
     ];
 
@@ -23,12 +23,40 @@ class Teacher extends Model
      *
      * @var array
      */
-    protected $appends = ['levels'];
+    protected $appends = ['levels', 'name', 'photo', 'email'];
 
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'user'
+    ];
 
     public function teacherLevel()
     {
         return $this->hasMany('App\Models\TeacherLevel');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    public function getPhotoAttribute()
+    {
+      return $this->user->photo;
+    }
+
+    public function getNameAttribute()
+    {
+      return $this->user->name;
+    }
+
+    public function getEmailAttribute()
+    {
+      return $this->user->email;
     }
 
     public function getLevelsAttribute()

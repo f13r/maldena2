@@ -15,14 +15,14 @@ class CheckBoxGroup extends React.Component {
   changeValue(e, { checked, value }) {
     checked ? this.checked.push(value) :
                   this.checked = this.checked.filter(item => item !== value)
-    
+
     this.props.setValue(this.checked);
   }
 
   render() {
 
     const { options, checkedOptions } = this.props;
-    
+
     return options.map((option, i) => (
       <FormField key={option.value}>
         <Checkbox
@@ -34,7 +34,7 @@ class CheckBoxGroup extends React.Component {
         />
       </FormField>
     ));
-     
+
   }
 }
 

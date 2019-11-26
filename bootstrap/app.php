@@ -1,9 +1,4 @@
 <?php
-
-
-use App\Services\ViewServices\DefaultTeacherViewService;
-use App\Services\ViewServices\Interfaces\TeacherViewInterface;
-
 require_once __DIR__.'/../vendor/autoload.php';
 
 try {
@@ -69,7 +64,6 @@ $app->singleton(
 
  $app->routeMiddleware([
      'jwt' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
-//     'auth' => App\Http\Middleware\Authenticate::class
  ]);
 
 /*
@@ -86,8 +80,6 @@ $app->singleton(
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
-
-// $app->register(App\Providers\EventServiceProvider::class);
 
 $app->register(Laravel\Socialite\SocialiteServiceProvider::class);
 

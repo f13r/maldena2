@@ -19,7 +19,7 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'facebook_id',
+        'name', 'email', 'facebook_id', 'facebook_token', 'photo'
     ];
 
     /**
@@ -28,8 +28,24 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
      * @var array
      */
     protected $hidden = [
-        'password',
+        'facebook_id', 'facebook_token', 'password', 'teacher'
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['teacher_id'];
+
+    public function getTeacherIdAttribute()
+    {
+      if ($this->teacher) {
+        return $this->teacher->id;
+      }
+
+      return null;
+    }
 
     public function getJWTIdentifier()
     {

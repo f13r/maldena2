@@ -28,4 +28,9 @@ class TeacherLevel extends Model
      */
     protected $hidden = [];
 
+    public function teacher()
+    {
+      return $this->belongsToMany('App\Models\Teacher');
+    }
+
 }
